@@ -1,7 +1,7 @@
 <?php
 $opt = ["headers" => ["Authorization:Basic zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz"]];
 $bulksms = new Sender($opt);
-$r = $s->send(['+380123456789' => 'Test']);
+$r = $bulksms->send(['+380123456789' => 'Test']);
 echo '<pre>' . print_r($r, true) . '</pre>';
 
 /**
@@ -30,10 +30,10 @@ class Sender
                 $this->data[] = ['to' => $phone, 'body' => GsmEncoder::utf8_to_gsm0338($message)];
             }
         }
+        if (empty($this->data)) throw new Exception('Recipients list is empty');
     }
     public function exec()
     {
-        if (empty($this->data)) throw new Exception('Recipients list is empty');
         $this->сh = curl_init();
         curl_setopt_array($this->сh,        [
             CURLINFO_HEADER_OUT => true,
